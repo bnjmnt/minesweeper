@@ -15,6 +15,8 @@ class Game {
   void Run();
 
  private:
+  void Draw() const;
+
   int rows_;
   int cols_;
   int mines_;

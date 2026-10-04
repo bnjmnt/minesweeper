@@ -16,9 +16,23 @@ Game::~Game() { CloseWindow(); }
 void Game::Run() {
   while (!WindowShouldClose()) {
     BeginDrawing();
+
     ClearBackground(RAYWHITE);
-    DrawText("MINESWEEPER", 10, 10, 20, LIGHTGRAY);
+
+    Draw();
+
     EndDrawing();
+  }
+}
+
+void Game::Draw() const {
+  ClearBackground(RAYWHITE);
+  for (int i = 0; i < rows_; ++i) {
+    for (int j = 0; j < cols_; ++j) {
+      int posX = i * cell_len_;
+      int posY = j * cell_len_;
+      DrawRectangleLines(posX, posY, cell_len_, cell_len_, LIGHTGRAY);
+    }
   }
 }
 
