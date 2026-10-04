@@ -1,10 +1,12 @@
 #pragma once
 
+#include "raylib.h"
+
 namespace minesweeper {
 
 class Game {
  public:
-  Game(int rows = 16, int cols = 16, int mines = 40, int cell_len = 32);
+  Game(int rows = 16, int cols = 16, int mines = 40, int cell_size = 32);
   ~Game();
 
   Game(const Game&) = delete;
@@ -20,7 +22,8 @@ class Game {
   int rows_;
   int cols_;
   int mines_;
-  int cell_len_;
+  int cell_size_;
+  Texture2D tile_texture_;
 };
 
 }  // namespace minesweeper
