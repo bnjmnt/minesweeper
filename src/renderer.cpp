@@ -27,11 +27,14 @@ void Renderer::Draw(const Board& board) const {
 
 std::optional<CellPosition> Renderer::GetCellPosition(
     Vector2 mouse, const Board& board) const {
-  if (mouse.x < 0 || mouse.y < 0) return std::nullopt;
+  if (mouse.x < 0 || mouse.y < 0) {
+    return std::nullopt;
+  }
   CellPosition pos{static_cast<int>(mouse.y) / cell_size_,
                    static_cast<int>(mouse.x) / cell_size_};
-  if (pos.row >= board.GetRows() || pos.col >= board.GetCols())
+  if (pos.row >= board.GetRows() || pos.col >= board.GetCols()) {
     return std::nullopt;
+  }
   return pos;
 }
 
