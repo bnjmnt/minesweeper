@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdlib>
+#include <queue>
 #include <vector>
 
 namespace minesweeper {
@@ -20,13 +21,15 @@ const Cell& Board::GetCell(int row, int col) const {
 
 void Board::Reveal(int row, int col) {
   Cell& cell = cells_[row * cols_ + col];
+  if (cell.is_flagged || cell.is_revealed) {
+    return;
+  }
+
   if (!has_placed_mines_) {
     PlaceMines(row, col);
     has_placed_mines_ = true;
   }
-  if (!cell.is_flagged) {
-    cell.is_revealed = true;
-  }
+  FloodFill(row, col);
 }
 
 void Board::ToggleFlag(int row, int col) {
@@ -73,6 +76,43 @@ void Board::PlaceMines(int safe_row, int safe_col) {
         ++mines;
       }
       cells_[row * cols_ + col].num_adjacent_mines = mines;
+    }
+  }
+}
+
+void Board::FloodFill(int start_row, int start_col) {
+  constexpr std::array<std::array<int, 2>, 8> dirs{
+      {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}};
+
+  std::queue<std::array<int, 2>> q;
+  q.push({start_row, start_col});
+  while (!q.empty()) {
+    auto [r, c] = q.front();
+    q.pop();
+
+    Cell& cell = cells_[r * cols_ + c];
+    if (cell.is_flagged || cell.is_revealed) {
+      continue;
+    }
+
+    cell.is_revealed = true;
+
+    if (cell.num_adjacent_mines != 0) {
+      continue;
+    }
+
+    for (const auto& dir : dirs) {
+      int nr = r + dir[0];
+      int nc = c + dir[1];
+      if (nr < 0 || nr >= rows_ || nc < 0 || nc >= cols_) {
+        continue;
+      }
+
+      Cell& neighbor = cells_[nr * cols_ + nc];
+
+      if (!neighbor.is_revealed && !neighbor.is_flagged && !neighbor.is_mine) {
+        q.push({nr, nc});
+      }
     }
   }
 }

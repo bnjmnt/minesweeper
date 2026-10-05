@@ -20,6 +20,7 @@ class Board {
 
  private:
   void PlaceMines(int safe_row, int safe_col);
+  void FloodFill(int start_row, int start_col);
 
   int rows_;
   int cols_;
