@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include <vector>
 
 #include "minesweeper/cell.h"
@@ -18,10 +19,14 @@ class Board {
   int GetCols() const;
 
  private:
+  void PlaceMines(int safe_row, int safe_col);
+
   int rows_;
   int cols_;
   int mines_;
   std::vector<Cell> cells_;
+  bool has_placed_mines_;
+  std::mt19937 rng_{std::random_device{}()};
 };
 
 }  // namespace minesweeper

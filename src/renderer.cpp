@@ -1,10 +1,9 @@
 #include "minesweeper/renderer.h"
 
-#include <raylib.h>
-
 #include <optional>
 
 #include "minesweeper/cell.h"
+#include "raylib.h"
 
 namespace minesweeper {
 
