@@ -23,7 +23,7 @@ class Game {
   int cols_;
   int mines_;
   int cell_size_;
-  Texture2D tile_texture_;
+  Texture2D tile_sheet_;
 };
 
 }  // namespace minesweeper

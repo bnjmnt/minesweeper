@@ -8,11 +8,11 @@ Game::Game(int rows, int cols, int mines, int cell_size)
     : rows_(rows), cols_(cols), mines_(mines), cell_size_(cell_size) {
   InitWindow(cols_ * cell_size_, rows_ * cell_size_, "Minesweeper");
   SetTargetFPS(60);
-  tile_texture_ = LoadTexture("assets/tile.png");
+  tile_sheet_ = LoadTexture("assets/tile_sheet.png");
 }
 
 Game::~Game() {
-  UnloadTexture(tile_texture_);
+  UnloadTexture(tile_sheet_);
   CloseWindow();
 }
 
@@ -34,7 +34,13 @@ void Game::Draw() const {
     for (int j = 0; j < cols_; ++j) {
       int posX = i * cell_size_;
       int posY = j * cell_size_;
-      DrawTexture(tile_texture_, posX, posY, WHITE);
+      Rectangle src = {static_cast<float>(posX), 0,
+                       static_cast<float>(cell_size_),
+                       static_cast<float>(cell_size_)};
+      Rectangle dst = {static_cast<float>(posX), static_cast<float>(posY),
+                       static_cast<float>(cell_size_),
+                       static_cast<float>(cell_size_)};
+      DrawTexturePro(tile_sheet_, src, dst, {0, 0}, 0, WHITE);
     }
   }
 }
