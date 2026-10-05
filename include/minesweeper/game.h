@@ -21,6 +21,7 @@ class Game {
 
  private:
   void Draw();
+  void HandleInput();
 
   Config cfg_;
   Window window_;

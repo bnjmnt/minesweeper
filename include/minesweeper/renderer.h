@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "minesweeper/board.h"
 #include "minesweeper/cell.h"
 #include "raylib.h"
@@ -17,6 +19,8 @@ class Renderer {
   Renderer& operator=(Renderer&&) = delete;
 
   void Draw(const Board& board) const;
+  std::optional<CellPosition> GetCellPosition(Vector2 mouse,
+                                              const Board& board) const;
 
  private:
   static CellType GetCellType(const Cell& cell);

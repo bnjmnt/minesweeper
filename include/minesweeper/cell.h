@@ -24,4 +24,9 @@ struct Cell {
   int num_adjacent_mines = 0;
 };
 
+struct CellPosition {
+  int row;
+  int col;
+};
+
 }  // namespace minesweeper

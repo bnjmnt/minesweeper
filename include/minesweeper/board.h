@@ -11,6 +11,9 @@ class Board {
   Board(int rows, int cols, int mines);
 
   const Cell& GetCell(int row, int col) const;
+  void Reveal(int row, int col);
+  void ToggleFlag(int row, int col);
+
   int GetRows() const;
   int GetCols() const;
 

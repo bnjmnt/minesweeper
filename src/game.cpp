@@ -16,11 +16,21 @@ Game::Game(const Config& cfg)
 
 void Game::Run() {
   while (!WindowShouldClose()) {
+    HandleInput();
     BeginDrawing();
     ClearBackground(RAYWHITE);
     renderer_.Draw(board_);
     EndDrawing();
   }
+}
+
+void Game::HandleInput() {
+  auto pos = renderer_.GetCellPosition(GetMousePosition(), board_);
+  if (!pos) return;
+  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    board_.Reveal(pos->row, pos->col);
+  if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    board_.ToggleFlag(pos->row, pos->col);
 }
 
 }  // namespace minesweeper
