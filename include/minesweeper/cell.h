@@ -17,4 +17,11 @@ enum class CellType {
   Mine,
 };
 
+struct Cell {
+  bool is_revealed = false;
+  bool is_mine = false;
+  bool is_flagged = false;
+  int num_adjacent_mines = 0;
+};
+
 }  // namespace minesweeper

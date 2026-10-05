@@ -1,40 +1,25 @@
 #include "minesweeper/game.h"
 
-#include "minesweeper/cell.h"
+#include "minesweeper/board.h"
 #include "minesweeper/renderer.h"
+#include "minesweeper/window.h"
 #include "raylib.h"
 
 namespace minesweeper {
 
-Game::Game(int rows, int cols, int mines, int cell_size)
-    : rows_(rows), cols_(cols), mines_(mines), cell_size_(cell_size) {
-  InitWindow(cols_ * cell_size_, rows_ * cell_size_, "Minesweeper");
-  SetTargetFPS(60);
-  renderer_.Init();
-}
-
-Game::~Game() { CloseWindow(); }
+Game::Game(const Config& cfg)
+    : cfg_(cfg),
+      window_(cfg.cols * cfg.cell_size, cfg.rows * cfg.cell_size,
+              "Minesweeper"),
+      board_(cfg.cols, cfg.rows, cfg.mines),
+      renderer_(cfg.cell_size) {}
 
 void Game::Run() {
   while (!WindowShouldClose()) {
     BeginDrawing();
-
     ClearBackground(RAYWHITE);
-
-    Draw();
-
+    renderer_.Draw(board_);
     EndDrawing();
-  }
-}
-
-void Game::Draw() {
-  ClearBackground(RAYWHITE);
-  for (int i = 0; i < rows_; ++i) {
-    for (int j = 0; j < cols_; ++j) {
-      int posX = j * cell_size_;
-      int posY = i * cell_size_;
-      renderer_.DrawCell(CellType::Hidden, posX, posY, cell_size_);
-    }
   }
 }
 
