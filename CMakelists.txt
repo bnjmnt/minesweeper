@@ -10,6 +10,7 @@ find_package(raylib REQUIRED)
 add_executable(minesweeper
   src/main.cpp
   src/game.cpp
+  src/renderer.cpp
 )
 target_include_directories(minesweeper PRIVATE include)
 target_link_libraries(minesweeper PRIVATE raylib)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "raylib.h"
+#include "minesweeper/renderer.h"
 
 namespace minesweeper {
 
@@ -17,13 +17,13 @@ class Game {
   void Run();
 
  private:
-  void Draw() const;
+  void Draw();
 
   int rows_;
   int cols_;
   int mines_;
   int cell_size_;
-  Texture2D tile_sheet_;
+  Renderer renderer_;
 };
 
 }  // namespace minesweeper
