@@ -17,10 +17,11 @@ Renderer::~Renderer() { UnloadTexture(cell_sheet_); }
 void Renderer::Draw(const Board& board) const {
   for (int row = 0; row < board.GetRows(); ++row) {
     for (int col = 0; col < board.GetCols(); ++col) {
-      Rectangle src = GetCellSource(GetCellType(board.GetCell(row, col)));
+      const Cell& cell = board.GetCell(row, col);
+      Rectangle src = GetCellSource(GetCellType(cell));
       Vector2 pos{static_cast<float>(col * cell_size_),
                   static_cast<float>(row * cell_size_)};
-      DrawTextureRec(cell_sheet_, src, pos, WHITE);
+      DrawTextureRec(cell_sheet_, src, pos, cell.is_exploded ? RED : WHITE);
     }
   }
 }

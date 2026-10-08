@@ -38,6 +38,7 @@ void Board::Reveal(int row, int col) {
   }
 
   if (cell.is_mine) {
+    cell.is_exploded = true;
     game_state_ = GameState::Lost;
     RevealAllMines();
     return;
