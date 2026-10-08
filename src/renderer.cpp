@@ -8,7 +8,8 @@
 namespace minesweeper {
 
 Renderer::Renderer(int cell_size) : cell_size_(cell_size) {
-  cell_sheet_ = LoadTexture("assets/cell_sheet.png");
+  cell_sheet_ = LoadTexture(
+      TextFormat("%sassets/cell_sheet.png", GetApplicationDirectory()));
 }
 
 Renderer::~Renderer() { UnloadTexture(cell_sheet_); }

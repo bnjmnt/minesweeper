@@ -11,7 +11,7 @@ Game::Game(const Config& cfg)
     : cfg_(cfg),
       window_(cfg.cols * cfg.cell_size, cfg.rows * cfg.cell_size,
               "Minesweeper"),
-      board_(cfg.cols, cfg.rows, cfg.mines),
+      board_(cfg.rows, cfg.cols, cfg.mines),
       renderer_(cfg.cell_size) {}
 
 void Game::Run() {
