@@ -6,6 +6,8 @@
 #include <queue>
 #include <vector>
 
+#include "minesweeper/game_state.h"
+
 namespace minesweeper {
 
 Board::Board(int rows, int cols, int mines)
@@ -13,13 +15,18 @@ Board::Board(int rows, int cols, int mines)
       cols_(cols),
       mines_(mines),
       cells_(rows * cols),
-      has_placed_mines_(false) {}
+      has_placed_mines_(false),
+      game_state_(GameState::Playing) {}
 
 const Cell& Board::GetCell(int row, int col) const {
   return cells_[row * cols_ + col];
 }
 
 void Board::Reveal(int row, int col) {
+  if (game_state_ != GameState::Playing) {
+    return;
+  }
+
   Cell& cell = cells_[row * cols_ + col];
   if (cell.is_flagged || cell.is_revealed) {
     return;
@@ -29,7 +36,17 @@ void Board::Reveal(int row, int col) {
     PlaceMines(row, col);
     has_placed_mines_ = true;
   }
+
+  if (cell.is_mine) {
+    game_state_ = GameState::Lost;
+    RevealAllMines();
+    return;
+  }
+
   FloodFill(row, col);
+  if (revealed_count_ == rows_ * cols_ - mines_) {
+    game_state_ = GameState::Won;
+  }
 }
 
 void Board::ToggleFlag(int row, int col) {
@@ -41,6 +58,7 @@ void Board::ToggleFlag(int row, int col) {
 
 int Board::GetRows() const { return rows_; }
 int Board::GetCols() const { return cols_; }
+GameState Board::GetGameState() const { return game_state_; }
 
 void Board::PlaceMines(int safe_row, int safe_col) {
   std::vector<int> candidates;
@@ -96,6 +114,7 @@ void Board::FloodFill(int start_row, int start_col) {
     }
 
     cell.is_revealed = true;
+    ++revealed_count_;
 
     if (cell.num_adjacent_mines != 0) {
       continue;
@@ -107,12 +126,18 @@ void Board::FloodFill(int start_row, int start_col) {
       if (nr < 0 || nr >= rows_ || nc < 0 || nc >= cols_) {
         continue;
       }
-
       Cell& neighbor = cells_[nr * cols_ + nc];
-
       if (!neighbor.is_revealed && !neighbor.is_flagged && !neighbor.is_mine) {
         q.push({nr, nc});
       }
+    }
+  }
+}
+
+void Board::RevealAllMines() {
+  for (Cell& c : cells_) {
+    if (c.is_mine) {
+      c.is_revealed = true;
     }
   }
 }

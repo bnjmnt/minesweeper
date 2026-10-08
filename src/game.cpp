@@ -1,6 +1,7 @@
 #include "minesweeper/game.h"
 
 #include "minesweeper/board.h"
+#include "minesweeper/game_state.h"
 #include "minesweeper/renderer.h"
 #include "minesweeper/window.h"
 #include "raylib.h"
@@ -25,6 +26,13 @@ void Game::Run() {
 }
 
 void Game::HandleInput() {
+  if (IsKeyPressed(KEY_R)) {
+    board_ = Board(cfg_.rows, cfg_.cols, cfg_.mines);
+    return;
+  }
+  if (board_.GetGameState() != GameState::Playing) {
+    return;
+  }
   auto pos = renderer_.GetCellPosition(GetMousePosition(), board_);
   if (!pos) {
     return;
